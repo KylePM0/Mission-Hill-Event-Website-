@@ -1,5 +1,4 @@
 const express = require('express');
-Test
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -15,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Home Page' });
+    res.render('contact', { title: 'Home Page' });
 });
 
 const db = new sqlite3.Database('./messages.db', (err) => {
