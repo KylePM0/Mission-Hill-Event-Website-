@@ -17,7 +17,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="index.ejs">Mission Hill Community</a>
+            <a class="navbar-brand" href="/">Mission Hill Community</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -51,40 +51,35 @@
 
 
     <div class="table">
-        <table class=r ests>
+        <table class=rests>
             <table style="width:100%">
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Phone #</th>
-                </tr>
-                <tr>
-                    <td><a href="https://chilacatesmx.com/mission">Chilacates</a></td>
-                    <td>1482 A Tremont St, Boston, MA 02120</td>
-                    <td>(617) 238-5437</td>
-                </tr>
-                <tr>
-                    <td>Milkweed</td>
-                    <td>1508 Tremont St, Boston, MA 02120</td>
-                    <td>(617) 516-8913</td>
-                </tr>
-                <tr>
-                    <td>The Squealing Pig</td>
-                    <td>134 Smith St, Boston, MA 02120</td>
-                    <td>(617) 322-5299</td>
-                </tr>
-                <tr>
-                    <td><a href="https://www.gingerexchange.com/mission/">Ginger Exchange</a></td>
-                    <td>1625 Tremont St, Boston, MA 02120</td>
-                    <td>(617) 739-8888</td>
-                </tr>
-                <tr>
-                    <td><a href="https://slicelife.com/restaurants/ma/boston/02115/mama-s-place/menu?utm_source=gmb_menu">Mama's Place</a></td>
-                    <td>764 Huntington Ave #6321, Boston, MA 02115</td>
-                    <td>(617) 566-1300</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone #</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% restaurants.forEach((restaurant) => { %>
+                        <tr>
+                            <td>
+                                <%= restaurant.Name %>
+                            </td>
+                            <td>
+                                <%= restaurant.Address %>
+                            </td>
+                            <td>
+                                <%= restaurant.Phone %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
             </table>
-
+            <div class="text-center">
+                <h1>Want to add an restaurant to our page?</h1>
+                <button>Click here!</button>
+            </div>
 
             </p>
     </div>
