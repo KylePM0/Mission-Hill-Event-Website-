@@ -1,11 +1,17 @@
 const sqlite3 = require("sqlite3").verbose();
-const express = require("express")
+const express = require("express");
+const bodyParser = require("body-parser");
+const nodemailer = require('nodemailer');
+
 
 const app = express();
 const PORT = 3001;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 
 //This command searches for a database in the root directory named events.db and if it exists, it will connect to it. Other, it will create it for us.
 const event_db = new sqlite3.Database('./events.db', (err) => {
@@ -126,6 +132,64 @@ app.get('/post.ejs', (req, res) => {
         res.render("post", { events: rows });
     });
 })
+
+app.post('/create_event', (req, res) => {
+    const event_name = req.body.event_name;
+    const event_address = req.body.event_address;
+    const event_time = req.body.event_time;
+
+    event_db.run(`INSERT INTO events (Name, Address, Time) VALUES (?, ?, ?)`, [event_name, event_address, event_time], function(err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.redirect("/post.ejs");
+    });
+});
+
+app.post('/create_rest', (req, res) => {
+    const rest_name = req.body.rest_name;
+    const rest_address = req.body.rest_address;
+    const rest_num = req.body.rest_num;
+
+    rest_db.run(`INSERT INTO restaurants (Name, Address, Phone) VALUES (?, ?, ?)`, [rest_name, rest_address, rest_num], function(err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        res.redirect("/rest.ejs");
+    });
+});
+
+app.post('/sendemail', (req, res) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'webdevsnailmailbot@gmail.com',
+            pass: 'tsvksrpxrjzxbagc'
+        }
+    });
+
+    let messageBody = `From: ${req.body.contact_name}\n`;
+    messageBody += `Phone number: ${req.body.contact_num}\n\n`;
+    messageBody += `Message: ${req.body.contact_message}\n\n`;
+
+
+    const mailOptions = {
+        from: req.body.contact_email,
+        to: 'kylepm06@gmail.com',
+        subject: req.body.contact_subject,
+        text: messageBody
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+            console.log(error);
+            res.render("failure.ejs");
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.render("success.ejs");
+        }
+    });
+});
 
 //function that lets us listen on a port. This is where we will host our website.
 app.listen(PORT, () => {
